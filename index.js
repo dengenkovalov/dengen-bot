@@ -18,7 +18,7 @@ const startGame = async (chatId) => {
     await bot.sendMessage(chatId, `Угадывай!`, gameOptions);
 }
 
-const initBase = async () => {
+const connectDB = async () => {
     await sequelize.authenticate();
     await sequelize.sync();
 }
@@ -26,15 +26,15 @@ const initBase = async () => {
 const startBot = () => {
     
     try {
-        initBase();
+        connectDB();
     } catch (error) {
-        console.log('Ошибка подключения', error)
+        console.log('Ошибка подключения к БД', error)
     }
 
     bot.setMyCommands( [
         {command: '/start', description: 'Стартовое приветствие'},
         {command: '/info', description: 'О пользователе'},
-        {command: '/game', description: 'Игра "Угадай число'},
+        {command: '/game', description: 'Игра \'Угадай число\''},
     ])
     
     bot.on('message', async msg => {
