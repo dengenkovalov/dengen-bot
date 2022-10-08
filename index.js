@@ -58,29 +58,44 @@ const startBot = () => {
                 } 
 
                 await bot.sendSticker(chatId, process.env.STICKER_URL);
-                return bot.sendMessage(chatId, `Добро пожаловать в dengen-бот!`);
+                return bot.sendMessage(chatId, `Добро пожаловать в dengen-бот!`)
+                    .catch((error) => {
+                        console.log(error.message);
+                    });
             }
         
             if (text === '/info'){
                 const user = await UserResult.findOne({userName, chatId});
-                return bot.sendMessage(chatId, `Вас зовут ${userName}. Правильных ответов ${user.right}, неправильных ${user.wrong}`);
+                return bot.sendMessage(chatId, `Вас зовут ${userName}. Правильных ответов ${user.right}, неправильных ${user.wrong}`)
+                    .catch((error) => {
+                        console.log(error.message);
+                    });
             }
     
             if (text === '/clear'){
                 const user = await UserResult.findOne({userName, chatId});
                 user.right = user.wrong = 0;
                 await user.save({userName, chatId});
-                return bot.sendMessage(chatId, 'Статистика сброшена.');
+                return bot.sendMessage(chatId, 'Статистика сброшена.')
+                    .catch((error) => {
+                        console.log(error.message);
+                    });
             }
     
            if (text === '/game'){
                 return startGame(chatId, userName);
             }
     
-           return bot.sendMessage(chatId, `Я тебя не понял, повтори`);
+           return bot.sendMessage(chatId, `Я тебя не понял, повтори`)
+                .catch((error) => {
+                    console.log(error.message);
+                });
             
         } catch (error) {
-            return bot.sendMessage(chatId, 'Произошла ошибка:' + error.message);
+            return bot.sendMessage(chatId, 'Произошла ошибка:' + error.message)
+                .catch((error) => {
+                    console.log(error.message);
+                });
         }
     
 
@@ -93,7 +108,10 @@ const startBot = () => {
         const user = await UserResult.findOne({userName, chatId});
 
         if (data === '/stop'){
-            return bot.sendMessage(chatId, `Спасибо за игру!`);
+            return bot.sendMessage(chatId, `Спасибо за игру!`)
+                .catch((error) => {
+                    console.log(error.message);
+                });
         }
 
         if (data === '/again'){
@@ -102,10 +120,16 @@ const startBot = () => {
 
         if (data == chats[userName]) {
             user.right += 1;
-            await bot.sendMessage(chatId, `УГАДАЛ!!!`, againOptions);
+            await bot.sendMessage(chatId, `УГАДАЛ!!!`, againOptions)
+            .catch((error) => {
+                console.log(error.message);
+            });
         } else {
             user.wrong += 1;
-            await bot.sendMessage(chatId, `Нет, ошибся!`, againOptions);
+            await bot.sendMessage(chatId, `Нет, ошибся!`, againOptions)
+            .catch((error) => {
+               console.log(error.message);
+            });
         }
 
         await user.save();
