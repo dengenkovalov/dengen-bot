@@ -6,7 +6,19 @@ const mongoose = require('mongoose');
 
 require('dotenv').config();
 
-let bot = new TelegramBot(process.env.BOT_TOKEN, {polling: true});
+const options = {
+    polling: true,
+    webHook: {
+      port: process.env.PORT
+    }
+  };
+  
+  const url = process.env.APP_URL || 'https://dengenbot.herokuapp.com:443';
+
+  const bot = new TelegramBot(process.env.BOT_TOKEN, options);
+
+  bot.setWebHook(`${url}/bot${process.env.BOT_TOKEN}`);
+
 
 let chats = {}
 
