@@ -15,5 +15,8 @@
     "mongoose": "^6.6.5",
     "node-telegram-bot-api": "^0.59.0",
     "nodemon": "^2.0.20"
+  },
+  "engines": {
+    "node": "13.14.0"
   }
 }
