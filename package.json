@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "mongoose": "^6.6.5",
     "node-telegram-bot-api": "^0.59.0",
     "nodemon": "^2.0.20",
     "pg": "^8.8.0",
