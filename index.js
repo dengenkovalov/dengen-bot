@@ -1,14 +1,12 @@
 const TelegramBot = require('node-telegram-bot-api')
 const {gameOptions, againOptions} = require('./options');
 
-const db = require('./db');
 const UserResult = require('./models');
 const mongoose = require('mongoose');
 
-// t.me/dengen_user_bot
-const botToken = '5745655939:AAHPP7QStpYkFV75uyeMYlChH7Ld1Re3htg'
+require('dotenv').config();
 
-let bot = new TelegramBot(botToken, {polling: true});
+let bot = new TelegramBot(process.env.BOT_TOKEN, {polling: true});
 
 let chats = {}
 
@@ -21,12 +19,12 @@ const startGame = async (chatId, userName) => {
     const partNumber = Math.floor(Math.random() * 10);
     let randomNumber = (partNumber + partTime) % 2;
     chats[userName] = randomNumber;
-    await bot.sendMessage(chatId, `Что я загадал?`, gameOptions);
+    await bot.sendMessage(chatId, `Какое число я загадал?`, gameOptions);
 }
 
 const connectDB = async () => {
     mongoose
-        .connect(db)
+        .connect(process.env.MONGO_URL)
         .then(console.log('Connected to DB'))
         .catch(error => console.log(error));
 }
@@ -59,7 +57,7 @@ const startBot = () => {
                     await user.save({userName, chatId});
                 } 
 
-                await bot.sendSticker(chatId, 'https://tlgrm.ru/_/stickers/0e3/159/0e315900-c335-352c-b746-124d5b940ac2/1.webp');
+                await bot.sendSticker(chatId, process.env.STICKER_URL);
                 return bot.sendMessage(chatId, `Добро пожаловать в dengen-бот!`);
             }
         
