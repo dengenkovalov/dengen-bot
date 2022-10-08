@@ -24,7 +24,7 @@ const startGame = async (chatId, userName) => {
 
 const connectDB = async () => {
     mongoose
-        .connect(process.env.MONGO_URL)
+        .connect(process.env.MONGO_URL, {keepAlive: true, keepAliveInitialDelay: 10000 })
         .then(console.log('Connected to DB'))
         .catch(error => console.log(error));
 }
@@ -93,8 +93,7 @@ const startBot = () => {
         const user = await UserResult.findOne({userName, chatId});
 
         if (data === '/stop'){
-            bot.sendMessage(chatId, `Спасибо за игру!`);
-            return bot.close();
+            return bot.sendMessage(chatId, `Спасибо за игру!`);
         }
 
         if (data === '/again'){
